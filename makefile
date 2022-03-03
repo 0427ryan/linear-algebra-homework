@@ -6,15 +6,20 @@ SRC_PATH = ./src
 INCLIUDE_PATH = ./include
 ARGS = -std=c++11 -Wall -I ${INCLIUDE_PATH}
 VPATH += ${SRC_PATH} ${INCLIUDE_PATH} ${BIN_PATH}
-OBJS = number.o formula.o
+_OBJS = number.o formula.o
+
+main = ${SRC_PATH}/main.cpp
+EXE_FILE = main
+
+OBJS = ${patsubst %.o, ${BIN_PATH}/%.o, ${_OBJS}}
 
 .PHONY:all
 
 all: ${OBJS}
-	${CC} ${ARGS} -B"${BIN_PATH}";"${SRC_PATH}" -o main ${OBJS} main.cpp
+	${CC} ${ARGS} -o ${EXE_FILE} ${OBJS} ${main}
 
 
-%.o: 
+${BIN_PATH}/%.o: 
 	-@mkdir "${BIN_PATH}"
 	${CC} ${ARGS} -c -o ${BIN_PATH}/$*.o ${SRC_PATH}/$*.cpp
 
