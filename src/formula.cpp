@@ -36,6 +36,14 @@ Formula Formula::operator/(int i){
     return {v, this->left / Number{i}};
 };
 
-Formula Formula::to_string(){
-    
+std::string  Formula::to_string(){
+    std::string ret = "";
+    for(int i = 0 ; i < (int)vars.size() ; i++){
+        if(i != 0 && vars[i].upper < 0){
+            ret += "+";
+        }
+        ret += " " + vars[i].to_string();
+    }
+    ret += " =" + left.to_string();
+    return ret;
 }
