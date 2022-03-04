@@ -5,9 +5,6 @@
 
 using namespace std;
 
-const int ROW = 3;
-const int COL = 3;
-
 std::ostream& operator<<(std::ostream &o, Number n){
     if(n.lower == 1){
         return o << n.upper;
@@ -33,11 +30,11 @@ void print_marix(vector<Formula> &v){
 
 void sort_row(vector<Formula> &v, int start, int end, int col){
     cout << "sorting" << endl;
-    for(int i = start ; i < end - 1 ; i++){
-        for(int j = end - 1 ; j > i ; j--){
-            if(v[j].vars[col].upper == 0){
-                cout << "swap (row " << j << ") and (row " << j + 1 << ")" << endl;
-                swap(v[j], v[j-1]);
+    for(int i = end - 1 ; i > 0 ; i--){
+        for(int j = 0 ; j < i ; j++){
+            if(v[j].vars[col].upper == 0 && v[j].vars[col].upper != 0){
+                cout << "swap (row " << j + 1 << ") and (row " << j + 2 << ")" << endl;
+                swap(v[j], v[j+1]);
             }
         }
     }
@@ -49,15 +46,15 @@ void toRef(vector<Formula> &v){
     print_marix(v);
 
     int begin = 0;
-    for(int i = 0 ; i < COL ; i++){
-        sort_row(v, begin, 3, i);
-        while(i < COL && v[begin].vars[i].upper == 0){
+    for(int i = 0 ; i < (int)v[0].vars.size() ; i++){
+        sort_row(v, begin, v.size(), i);
+        while(i < (int)v[0].vars.size() && v[begin].vars[i].upper == 0){
             i++;
         }
-        if(i >= COL){
+        if(i >= (int)v[0].vars.size()){
             break;
         }
-        for(int j = begin + 1 ; j < ROW && v[j].vars[i].upper != 0 ; j++){
+        for(int j = begin + 1 ; j < (int)v.size() && v[j].vars[i].upper != 0 ; j++){
             Number temp = v[j].vars[i] / v[begin].vars[i];
             
             cout << "(row " << j + 1 << ") - (row " << begin + 1 << ") * " << temp << endl;
