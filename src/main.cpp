@@ -29,6 +29,9 @@ void print_marix(vector<Formula> &v){
 }
 
 void sort_row(vector<Formula> &v, int start, int end, int col){
+    if(col >= (int)v[0].vars.size()){
+        return;
+    }
     cout << "sorting" << endl;
     for(int i = end - 1 ; i > 0 ; i--){
         for(int j = 0 ; j < i ; j++){
@@ -48,8 +51,9 @@ void toRef(vector<Formula> &v){
     int begin = 0;
     for(int i = 0 ; i < (int)v[0].vars.size() ; i++){
         sort_row(v, begin, v.size(), i);
-        while(i < (int)v[0].vars.size() && v[begin].vars[i].upper == 0){
+        while(i < (int)v[0].vars.size() && begin < (int)v.size() && v[begin].vars[i].upper == 0){
             i++;
+            sort_row(v, begin, v.size(), i);
         }
         if(i >= (int)v[0].vars.size()){
             break;

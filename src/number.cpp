@@ -1,7 +1,23 @@
 #include "number.h"
 
-int Number::gcd(int a, int b){
+int abs(int a){
+    return a < 0 ? a * -1 : a;
+}
+
+int gcd(int a, int b){
     return b == 0 ? a : gcd(b, a % b);
+}
+
+void check(Number &n){
+    if(n.lower < 0){
+        n.upper *= -1;
+        n.lower *= -1;
+    }
+    int upper = n.upper;
+    int lower = n.lower;
+    int fac = gcd(abs(upper), lower);
+    n.upper /= fac;
+    n.lower /= fac;
 }
 
 int Number::lcm(int a, int b){
@@ -26,42 +42,44 @@ Number::Number(std::string s){
 }
 Number::Number(int upper, int lower):upper(upper), lower(lower){}
 Number Number::upside_down(){
-    return {lower, upper};
+    Number ret{this->lower, this->upper};
+    check(ret);
+    return ret;
 }
 Number Number::operator+(Number n){
+    check(n);
+    check(*this);
     int upper = this->upper * n.lower + n.upper * this->lower;
     int lower = this->lower * n.lower;
-    int div = gcd(upper, lower);
-    return {upper / div, lower / div};
+    Number ret = {upper, lower};
+    check(ret);
+    return ret;
 }
 Number Number::operator-(Number n){
     n.upper *= -1;
     return *this + n;
 }
 Number Number::operator*(Number n){
-    return {upper / gcd(upper, n.lower) * n.upper / gcd(n.upper, lower), lower / gcd(n.upper, lower) * n.lower / gcd(upper, n.lower)};
+    check(n);
+    check(*this);
+    Number ret{upper * n.upper, lower * n.lower};
+    check(ret);
+    return ret;
 }
 Number Number::operator/(Number n){
     return *this * n.upside_down();
 }
 
 void Number::operator+=(Number n){
-    int upper = this->upper * n.lower + n.upper * this->lower;
-    int lower = this->lower * n.lower;
-    int div = gcd(upper, lower);
-    this->upper = upper / div;
-    this->lower = lower / div;
+    *this = *this + n;
 }
 void Number::operator-=(Number n){
-    n.upper *= -1;
-    *this += n;
+    *this = *this - n;
 }
 void Number::operator*=(Number n){
-    Number temp = *this;
-    this->upper = temp.upper / gcd(temp.upper, n.lower) * n.upper / gcd(n.upper, temp.lower);
-    this->lower = temp.lower / gcd(n.upper, temp.lower) * n.lower / gcd(temp.upper, n.lower);
+    *this = *this * n;
 }
 void Number::operator/=(Number n){
-    (*this) *= n.upside_down();
+    *this = *this / n;
 }
 
