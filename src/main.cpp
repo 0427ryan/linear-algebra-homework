@@ -113,6 +113,7 @@ int main(int argc, char const *argv[])
     cin >> row;
     cout << "Please enter column: ";
     cin >> col;
+    cout << "Please enter matrix: \n";
     for(int i = 0 ; i < row ; i++){
         vector<Number> temp;
         int left;
