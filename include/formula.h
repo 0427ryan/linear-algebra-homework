@@ -16,10 +16,12 @@ public:
         this->vars = s;
         this->left = left;
     };
-    Formula operator+(Formula &f);
-    Formula operator-(Formula &f);
-    Formula operator*(int i);
-    Formula operator/(int i);
+    Formula operator+(const Formula &f);
+    Formula operator-(const Formula &f);
+    Formula operator*(const int i);
+    Formula operator/(const int i);
+    Formula operator*(const Number i);
+    Formula operator/(const Number i);
 
     std::string to_string();
 };

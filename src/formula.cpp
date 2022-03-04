@@ -1,7 +1,6 @@
 
 #include "formula.h"
-
-Formula Formula::operator+(Formula &f){
+Formula Formula::operator+(const Formula &f){
     if(this->vars.size() != f.vars.size()){
         return {{}, 0};
     }
@@ -11,7 +10,7 @@ Formula Formula::operator+(Formula &f){
     }
     return {v, this->left + f.left};
 }
-Formula Formula::operator-(Formula &f){
+Formula Formula::operator-(const Formula &f){
     if(this->vars.size() != f.vars.size()){
         return {{}, 0};
     }
@@ -21,19 +20,28 @@ Formula Formula::operator-(Formula &f){
     }
     return {v, this->left - f.left};
 }
-Formula Formula::operator*(int i){
+Formula Formula::operator*(const int i){
+    return (*this) * Number{i};
+}
+Formula Formula::operator/(const int i){
+    return (*this) / Number{i};
+};
+
+Formula Formula::operator*(const Number i){
     std::vector<Number> v = this->vars;
     for(Number &n : v){
-        n *= Number{i, 1};
+        n *= i;
     }
+
     return {v, this->left * i};
 }
-Formula Formula::operator/(int i){
+ 
+Formula Formula::operator/(const Number i){
     std::vector<Number> v = this->vars;
     for(Number &n : v){
-        n *= Number{1, i};
+        n /= i;
     }
-    return {v, this->left / Number{i}};
+    return {v, this->left / i};
 };
 
 std::string  Formula::to_string(){
