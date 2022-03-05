@@ -95,8 +95,8 @@ void toRref(vector<Formula> &v){
                 continue;
             }
             cout << "(row " << j + 1 << ") - (row " << i + 1 << ") * " << v[j].vars[temp] * v[i].vars[temp] << endl;
-            print_marix(v);
             v[j] = v[j] - v[i] / v[i].vars[temp] * v[j].vars[temp];
+            print_marix(v);
         }
     }
 
